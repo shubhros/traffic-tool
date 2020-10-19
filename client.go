@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func startClient(server string, delay string) {
+func startClient(server string, delay string, clientId uint64) {
 
 	udpAddr, err := net.ResolveUDPAddr("udp4", server)
 
@@ -28,11 +28,11 @@ func startClient(server string, delay string) {
 		fmt.Println("Error parsing delay duration", delay)
 		return
 	}
-	var seqNo int64 = 0
+	var seqNo uint32 = 0
+	var number uint64
 	for {
-
-		err := binary.Write(c, binary.LittleEndian, seqNo)
-
+		number = uint64(seqNo) << 32 | clientId
+		err := binary.Write(c, binary.BigEndian, number)
 		if err != nil {
 			panic(err)
 		}
