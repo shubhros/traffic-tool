@@ -34,7 +34,7 @@ func startClient(server string, delay string, clientId uint64) {
 		number = uint64(seqNo) << 32 | clientId
 		err := binary.Write(c, binary.BigEndian, number)
 		if err != nil {
-			panic(err)
+			continue
 		}
 		time.Sleep(sleepDuration)
 		seqNo++
